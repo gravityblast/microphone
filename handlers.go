@@ -64,7 +64,7 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 func SetResponseHeaders(w http.ResponseWriter, r *http.Request) bool {
   w.Header().Set("Content-Type", "application/json")
-  w.Header().Set("X-BRAINZ-VERSION", "0.1.0")
+  w.Header().Set("X-MICROPHONE-VERSION", "0.1.0")
 
   return true
 }
