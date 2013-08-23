@@ -10,6 +10,8 @@ import (
   "database/sql"
 )
 
+const VERSION = "0.1.0"
+
 type InvalidGid struct {
   Gid string
 }
@@ -30,6 +32,7 @@ type ResponseError struct {
 
 var DB *sql.DB
 var lyricfindClient *lyricfind.Client
+var router *traffic.Router
 
 func init() {
   var err error
@@ -39,16 +42,17 @@ func init() {
     log.Fatal(err)
   }
   lyricfindClient = lyricfind.NewClient()
+
+  router = traffic.New()
+  router.AddBeforeFilter(SetResponseHeaders)
+  router.Get("/", RootHandler)
+  router.Get("/recordings/:gid", RecordingHandler)
+  router.NotFoundHandler = NotFoundHandler
 }
 
 func main() {
   port := os.Getenv("PORT")
   host := os.Getenv("HOST")
-
-  router := traffic.New()
-  router.AddBeforeFilter(SetResponseHeaders)
-  router.Get("/recordings/:gid", LyricsHandler)
-  router.NotFoundHandler = NotFoundHandler
 
   fmt.Printf("Starting on %s:%s\n", host, port)
 

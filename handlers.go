@@ -5,7 +5,7 @@ import (
   "encoding/json"
 )
 
-func LyricsHandler(w http.ResponseWriter, r *http.Request) {
+func RecordingHandler(w http.ResponseWriter, r *http.Request) {
   gid, err := ExtractGidFromRequest(r)
   if err != nil {
     w.WriteHeader(http.StatusBadRequest)
@@ -64,7 +64,6 @@ func NotFoundHandler(w http.ResponseWriter, r *http.Request) {
 
 func SetResponseHeaders(w http.ResponseWriter, r *http.Request) bool {
   w.Header().Set("Content-Type", "application/json")
-  w.Header().Set("X-MICROPHONE-VERSION", "0.1.0")
 
   return true
 }
